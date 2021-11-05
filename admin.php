@@ -228,7 +228,7 @@
                 </table>   
             </div>
             <?php 
-                    $sqlkm = "SELECT ct.CTKM_TEN, ct.CTKM_NGAYBD, ct.CTKM_NGAYKT, sp.SP_TEN, ct.CTKM_PHANTRAM
+                    $sqlkm = "SELECT ct.CTKM_MA, ct.CTKM_TEN, ct.CTKM_NGAYBD, ct.CTKM_NGAYKT, sp.SP_TEN, ct.CTKM_PHANTRAM
                                 FROM san_pham AS sp
                                     JOIN chi_tiet_khuyen_mai AS ct ON sp.SP_MA = ct.SP_MA;";
                     $resultkm = $con->query($sqlkm);
@@ -243,6 +243,7 @@
                         <th class="col-9">Ngày kết thúc</th>
                         <th class="col-9">Tên sản phẩm khuyến mãi</th>
                         <th class="col-9">Phần trăm khuyến mãi</th>
+                        <th class="col-9">Thao Tác</th> 
                     </tr>
 
                     <?php 
@@ -252,7 +253,15 @@
                             echo " <td class='col-9'> ". $rowkm['CTKM_NGAYBD'] ." </td>";
                             echo " <td class='col-9'> ". $rowkm['CTKM_NGAYKT'] ." </td>";
                             echo " <td class='col-9'> ". $rowkm['SP_TEN'] ." </td>";
-                            echo " <td class='col-9'> ". $rowkm['CTKM_PHANTRAM'] ." </td>";
+                            echo " <td class='col-9'> ". $rowkm['CTKM_PHANTRAM'] ." </td>"  ;
+                          
+                            echo "<td><a class='btnAction' href='./admin-edit-promotion.php?id=". $rowkm['CTKM_MA'] ."'>Sửa</a>
+                            
+                            <a class='btnAction' href='./admin-delete-promotion.php?id=". $rowkm['CTKM_MA'] ."'>Xóa</a>
+                            </td>";
+                            // echo "<td><a href='./admin-delete-promotion.php?id=". $rowkm['CTKM_MA'] ."'>Xóa</a></td>";
+                            
+
                             echo " </tr>";
                         }
                         $result->free();
