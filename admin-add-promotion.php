@@ -15,7 +15,7 @@
 <?php
 
         require 'database_connection.php';
-        $sql ="SELECT * FROM san_pham_sp" ;
+        $sql ="SELECT * FROM san_pham" ;
         $result = $con->query($sql);
 
 ?>
@@ -46,6 +46,7 @@
                             <div class="form-group">
                                 <label>Tên khuyến mãi</label> <br>
                                 <input type="text" name="name_promotion" class="form-control" placeholder="Nhập tên khuyến mãi">
+                                
                             </div>
                             <div class="form-group">
                                 <label>Tên sản phẩm</label> <br>
@@ -53,10 +54,10 @@
                                     <option>---Chọn tên sản phẩm---</option>
                                     <?php 
                                 // echo " <select class='form-control'>";
-                                        while($row = $result->fetch_assoc()){
+                                        while($row= $result->fetch_assoc()){
                                             echo " <option value=". $row['SP_MA'] .">";
                                             echo   $row['SP_TEN'];
-                                            echo " </option>" ;
+                                            echo " </option>" ; 
                                         }
                                         $result->free();
                                     ?>
@@ -95,58 +96,21 @@
             $KM_TEN = $_POST['name_promotion'];
             $KM_NGAYBD = $_POST['start_date'];
             $KM_NGAYKT = $_POST['end_date'];
-            $KM_NGAYKT = $_POST['end_date'];
-            $CTKM_PHANTRAMKM = (float)$_POST['sale'];//float
-            $temp1= (int)$_POST['Loai_Hang'];
-            $LOAI_HANG = $temp1;//int
-            // $sqlKhuyenMai = "INSERT INTO khuyen_mai (KM_TEN, KM_NGAYBD, KM_NGAYKT) VALUES ('$KM_TEN', '$KM_NGAYBD', '$KM_NGAYKT');";
-            //     try{
-            //         $con->query($sqlKhuyenMai);
-                  
-            //     }catch(exception $e){
-            //         echo $e->getMessage();
-            //     }
-
-                try{
-                    $sqlShow = "SELECT * FROM khuyen_mai WHERE KM_TEN = '$KM_TEN';";
-                    $resultShow = $con->query($sqlShow);
-                    $rowShow = $resultShow->fetch_assoc();
-                    $KM =  (int)$rowShow['KM_MA'];
-                  
-                }catch(exception $e) {
-                    echo $e->getMessage();
-                }
-
-                echo ($KM);
-                echo ($LOAI_HANG);
-                echo ($CTKM_PHANTRAMKM);
-
-       
-                    // $sqltrung = "INSERT INTO chi_tiet_khuyen_mai (KM_MA, SP_MA, CTKM_PHANTRAMKM) VALUES ('1', '2', '15')";
-                    $sqlt= "INSERT INTO `chi_tiet_khuyen_mai` VALUES ('$KM', '$LOAI_HANG', '$CTKM_PHANTRAMKM')";
-                    $con->query($sqlt);
-                    // echo var_dump($con->query($sqlt));
-                    
-
-
-                // echo var_dump($con->query($sqlt));
-                // $resultT = ;
-                    
-                        //             echo "<script type='text/javascript'>
-                        //     alert('Thêm khuyến mãi thành công!');
-                        //     document.location='admin-add-promotion.php';
-                        // </script>";
-                // if(!$con->query($sqlChiTietKhuyenMai) ===TRUE && !$resultKhuyenMai === TRUE){
-                //     echo "<script type='text/javascript'>
-                //             alert('Thêm khuyến mãi không thành công!');
-                //             document.location='admin-add-promotion.php';
-                //         </script>";
-                // }else{
-                //     echo "<script type='text/javascript'>
-                //             alert('Thêm khuyến mãi thành công!');
-                //             document.location='admin-add-promotion.php';
-                //         </script>";
-                // }
+            $CTKM_PHANTRAMKM = $_POST['sale'];//float
+            $LOAI_HANG = $_POST['Loai_Hang'];
+            $sqlKhuyenMai = "INSERT INTO `chi_tiet_khuyen_mai` (`SP_MA`, `CTKM_PHANTRAM`, `CTKM_TEN`, `CTKM_NGAYBD`, `CTKM_NGAYKT`) VALUES ('$LOAI_HANG', '$CTKM_PHANTRAMKM', ' $KM_TEN', '$KM_NGAYBD', '$KM_NGAYKT')";
+    
+            if(!$con->query($sqlKhuyenMai) ===TRUE){
+                echo "<script type='text/javascript'>
+                        alert('Thêm khuyến mãi không thành công!');
+                        document.location='admin-add-promotion.php';
+                    </script>";
+            }else{
+                echo "<script type='text/javascript'>
+                        alert('Thêm khuyến mãi thành công!');
+                        document.location='admin-add-promotion.php';
+                    </script>";
+            }
                
             
         }

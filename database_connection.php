@@ -1,5 +1,5 @@
 <?php
-    $ten = 'shop';
+    $ten = 'clothingshop';
     $con = new mysqli('localhost','root', "", $ten);
     $con->set_charset('utf8');
     if ($con->connect_error) {

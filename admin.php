@@ -227,6 +227,13 @@
                     </tr>
                 </table>   
             </div>
+            <?php 
+                    $sqlkm = "SELECT ct.CTKM_TEN, ct.CTKM_NGAYBD, ct.CTKM_NGAYKT, sp.SP_TEN, ct.CTKM_PHANTRAM
+                                FROM san_pham AS sp
+                                    JOIN chi_tiet_khuyen_mai AS ct ON sp.SP_MA = ct.SP_MA;";
+                    $resultkm = $con->query($sqlkm);
+
+            ?>
             <div class="tab-content" id="Promotion">
                 <a href="./admin-add-promotion.php"><input class="btn-add-product" type="button" value="Thêm khuyến mãi"> </a>
                 <table class="tabl">
@@ -237,14 +244,22 @@
                         <th class="col-9">Tên sản phẩm khuyến mãi</th>
                         <th class="col-9">Phần trăm khuyến mãi</th>
                     </tr>
-                    <tr>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
+
+                    <?php 
+                        while($rowkm = $resultkm->fetch_assoc()){
+                            echo "<tr>";
+                            echo " <td class='col-9'> ". $rowkm['CTKM_TEN'] ." </td>";
+                            echo " <td class='col-9'> ". $rowkm['CTKM_NGAYBD'] ." </td>";
+                            echo " <td class='col-9'> ". $rowkm['CTKM_NGAYKT'] ." </td>";
+                            echo " <td class='col-9'> ". $rowkm['SP_TEN'] ." </td>";
+                            echo " <td class='col-9'> ". $rowkm['CTKM_PHANTRAM'] ." </td>";
+                            echo " </tr>";
+                        }
+                        $result->free();
+                    ?>
+                      
                         
-                    </tr>
+                   
                 </table>   
             </div>
            

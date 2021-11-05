@@ -88,7 +88,7 @@
         </form>
 
     </div>
-    <script src="./js/signup.js"></script>
+    <!-- <script src="./js/signup.js"></script> -->
     </div>
 </body>
 </html>

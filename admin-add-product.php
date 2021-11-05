@@ -18,13 +18,16 @@
         //session_start();
        
          
-            // require 'database_connection.php';
-            // session_start();
-            $sql ="SELECT * FROM loai_san_pham" ;
-            $result = $con->query($sql);      
+        // require 'database_connection.php';
+        // session_start();
+        $sql ="SELECT * FROM loai_san_pham" ;
+        $result = $con->query($sql);      
 
-            $sqlNSX = "SELECT * FROM nha_san_xuat";
-            $resultNSX = $con->query($sqlNSX);
+        $sqlNSX = "SELECT * FROM nha_san_xuat";
+        $resultNSX = $con->query($sqlNSX);
+        
+
+
 
 ?>
     
