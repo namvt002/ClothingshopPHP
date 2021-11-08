@@ -83,7 +83,7 @@
         <div class="tab-body">
             <div class="tab-content active" id="order">
 
-                <form action="" method="POST">
+                <form action="" method="GET">
                     <table class="tabl">
                         <tr>
                             <th class="col-9">Mã ĐH</th>
