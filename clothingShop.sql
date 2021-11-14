@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 05, 2021 at 01:38 PM
+-- Generation Time: Nov 14, 2021 at 02:49 PM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -44,10 +44,20 @@ CREATE TABLE `chi_tiet_don_hang` (
 
 CREATE TABLE `chi_tiet_khuyen_mai` (
   `CTKM_MA` int(11) NOT NULL,
-  `KM_MA` int(11) NOT NULL,
   `SP_MA` int(11) NOT NULL,
-  `CTKM_PHANTRAM` float NOT NULL
+  `CTKM_PHANTRAM` float NOT NULL,
+  `CTKM_TEN` varchar(200) COLLATE utf8mb4_vietnamese_ci NOT NULL,
+  `CTKM_NGAYBD` date NOT NULL,
+  `CTKM_NGAYKT` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `chi_tiet_khuyen_mai`
+--
+
+INSERT INTO `chi_tiet_khuyen_mai` (`CTKM_MA`, `SP_MA`, `CTKM_PHANTRAM`, `CTKM_TEN`, `CTKM_NGAYBD`, `CTKM_NGAYKT`) VALUES
+(3, 1, 26, ' Khuyến mãi mùa đông', '2021-11-13', '2021-11-26'),
+(4, 1, 10, ' Khuyến mãi mùa hè', '2021-11-01', '2021-11-25');
 
 -- --------------------------------------------------------
 
@@ -57,13 +67,21 @@ CREATE TABLE `chi_tiet_khuyen_mai` (
 
 CREATE TABLE `chi_tiet_phieu_nhap` (
   `CTPN_MA` int(11) NOT NULL,
-  `PN_MA` int(11) NOT NULL,
+  `K_MA` int(11) NOT NULL,
   `M_MA` int(11) NOT NULL,
   `S_MA` int(11) NOT NULL,
   `SP_MA` int(11) NOT NULL,
-  `CTPN_SOLONG` int(11) NOT NULL,
-  `CTPN_DONGGIA` float NOT NULL
+  `CTPN_SOLUONG` int(11) NOT NULL,
+  `CTPN_DONGIA` float NOT NULL,
+  `CTPN_NGAY` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `chi_tiet_phieu_nhap`
+--
+
+INSERT INTO `chi_tiet_phieu_nhap` (`CTPN_MA`, `K_MA`, `M_MA`, `S_MA`, `SP_MA`, `CTPN_SOLUONG`, `CTPN_DONGIA`, `CTPN_NGAY`) VALUES
+(5, 4, 6, 3, 2, 4, 26, '2021-11-14');
 
 -- --------------------------------------------------------
 
@@ -104,10 +122,11 @@ CREATE TABLE `don_hang` (
 
 CREATE TABLE `gia` (
   `GIA_MA` int(11) NOT NULL,
-  `NGÂYPDUNG` date NOT NULL,
+  `NGAYPDUNG` date NOT NULL,
   `SP_MA` int(11) NOT NULL,
   `S_MA` int(11) NOT NULL,
-  `GIA_TIEN` int(11) NOT NULL
+  `GIA_TIEN` int(11) NOT NULL,
+  `M_MA` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
 -- --------------------------------------------------------
@@ -151,6 +170,13 @@ CREATE TABLE `khach_hang` (
   `LEVEL` tinyint(2) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
+--
+-- Dumping data for table `khach_hang`
+--
+
+INSERT INTO `khach_hang` (`KH_MA`, `USER_NAME`, `PASSWORD`, `KH_TEN`, `KH_DIACHI`, `KH_SDT`, `KH_EMAIL`, `LEVEL`) VALUES
+(1, 'trung', '1', 'Tran Viet Trung', 'Chau Thanh A, Hau Giang', 1234206698, 'viettrung0601@gmail.com', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -162,6 +188,15 @@ CREATE TABLE `kho_hang` (
   `K_TEN` varchar(200) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `K_DIACHI` varchar(200) COLLATE utf8mb4_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `kho_hang`
+--
+
+INSERT INTO `kho_hang` (`K_MA`, `K_TEN`, `K_DIACHI`) VALUES
+(2, 'Kho 2', 'Hậu Giang'),
+(3, 'Kho 3', 'Vĩnh Long'),
+(4, 'Kho 4', 'Cần Thơ');
 
 -- --------------------------------------------------------
 
@@ -176,6 +211,13 @@ CREATE TABLE `khuyen_mai` (
   `KM_NGAYKT` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
+--
+-- Dumping data for table `khuyen_mai`
+--
+
+INSERT INTO `khuyen_mai` (`KM_MA`, `KM_TEN`, `KM_NGAYBD`, `KM_NGAYKT`) VALUES
+(1, 'Khuyến mãi mùa đông', '2021-11-13', '2021-11-26');
+
 -- --------------------------------------------------------
 
 --
@@ -184,8 +226,19 @@ CREATE TABLE `khuyen_mai` (
 
 CREATE TABLE `loai_san_pham` (
   `LH_MA` int(11) NOT NULL,
-  `LH_TEN` int(11) NOT NULL
+  `LH_TEN` varchar(200) COLLATE utf8mb4_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `loai_san_pham`
+--
+
+INSERT INTO `loai_san_pham` (`LH_MA`, `LH_TEN`) VALUES
+(1, 'Đầm'),
+(2, 'Áo thun'),
+(3, 'Áo'),
+(4, 'Quần'),
+(5, 'Set');
 
 -- --------------------------------------------------------
 
@@ -195,8 +248,22 @@ CREATE TABLE `loai_san_pham` (
 
 CREATE TABLE `mau` (
   `M_MA` int(11) NOT NULL,
-  `M_TEN` int(11) NOT NULL
+  `M_TEN` varchar(20) COLLATE utf8mb4_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `mau`
+--
+
+INSERT INTO `mau` (`M_MA`, `M_TEN`) VALUES
+(1, 'Trắng'),
+(2, 'Đên'),
+(3, 'Hồng'),
+(4, 'Vàng'),
+(5, 'Tím'),
+(6, 'Đỏ'),
+(7, 'Nâu'),
+(8, 'Xám');
 
 -- --------------------------------------------------------
 
@@ -225,6 +292,13 @@ CREATE TABLE `nhan_vien` (
   `LEVEL` tinyint(2) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
+--
+-- Dumping data for table `nhan_vien`
+--
+
+INSERT INTO `nhan_vien` (`NV_MA`, `USER_NAME`, `PASSWORD`, `NV_TEN`, `NV_EMAIL`, `NV_SDT`, `NV_DIACHI`, `LEVEL`) VALUES
+(1, 'admin', 'admin', 'admin', 'admin@gmail.com', 123456789, 'Hậu Giang', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -235,6 +309,14 @@ CREATE TABLE `nha_san_xuat` (
   `NSX_MA` int(11) NOT NULL,
   `NSX_TEN` varchar(100) COLLATE utf8mb4_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `nha_san_xuat`
+--
+
+INSERT INTO `nha_san_xuat` (`NSX_MA`, `NSX_TEN`) VALUES
+(1, 'Nhà sản xuất Việt Nam'),
+(2, 'Nhà sản xuất Hàn Quốc');
 
 -- --------------------------------------------------------
 
@@ -260,8 +342,18 @@ CREATE TABLE `san_pham` (
   `SP_TEN` varchar(200) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `SP_ANH` varchar(200) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `LH_MA` int(11) NOT NULL,
-  `NSX_MA` int(11) NOT NULL
+  `NSX_MA` int(11) NOT NULL,
+  `SP_GIA` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `san_pham`
+--
+
+INSERT INTO `san_pham` (`SP_MA`, `SP_TEN`, `SP_ANH`, `LH_MA`, `NSX_MA`, `SP_GIA`) VALUES
+(1, 'Áo thun', 'image.jpg', 2, 2, 100),
+(2, 'Đầm chân dài', 'dam.jpg', 1, 1, 200),
+(6, 'Áo thun ba lỗ', 'aothunnhieulo.jpg', 2, 2, 1000);
 
 -- --------------------------------------------------------
 
@@ -273,6 +365,18 @@ CREATE TABLE `size` (
   `S_MA` int(11) NOT NULL,
   `S_TEN` varchar(100) COLLATE utf8mb4_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `size`
+--
+
+INSERT INTO `size` (`S_MA`, `S_TEN`) VALUES
+(1, 'S'),
+(2, 'L'),
+(3, 'M'),
+(4, 'X'),
+(5, 'XL'),
+(6, 'XX');
 
 -- --------------------------------------------------------
 
@@ -304,7 +408,6 @@ ALTER TABLE `chi_tiet_don_hang`
 --
 ALTER TABLE `chi_tiet_khuyen_mai`
   ADD PRIMARY KEY (`CTKM_MA`),
-  ADD KEY `KM_MA` (`KM_MA`),
   ADD KEY `SP_MA` (`SP_MA`);
 
 --
@@ -315,7 +418,7 @@ ALTER TABLE `chi_tiet_phieu_nhap`
   ADD KEY `SP_MA` (`SP_MA`),
   ADD KEY `S_MA` (`S_MA`),
   ADD KEY `M_MA` (`M_MA`),
-  ADD KEY `PN_MA` (`PN_MA`);
+  ADD KEY `K_MA` (`K_MA`);
 
 --
 -- Indexes for table `chi_tiet_trang_thai`
@@ -339,8 +442,8 @@ ALTER TABLE `don_hang`
 ALTER TABLE `gia`
   ADD PRIMARY KEY (`GIA_MA`),
   ADD KEY `SP_MA` (`SP_MA`),
-  ADD KEY `S_MA` (`S_MA`),
-  ADD KEY `NGÂYPDUNG` (`NGÂYPDUNG`);
+  ADD KEY `NGÂYPDUNG` (`NGAYPDUNG`),
+  ADD KEY `S_MA` (`S_MA`);
 
 --
 -- Indexes for table `hinh_thuc_thanh_toan`
@@ -445,13 +548,13 @@ ALTER TABLE `chi_tiet_don_hang`
 -- AUTO_INCREMENT for table `chi_tiet_khuyen_mai`
 --
 ALTER TABLE `chi_tiet_khuyen_mai`
-  MODIFY `CTKM_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `CTKM_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `chi_tiet_phieu_nhap`
 --
 ALTER TABLE `chi_tiet_phieu_nhap`
-  MODIFY `CTPN_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `CTPN_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `chi_tiet_trang_thai`
@@ -487,43 +590,43 @@ ALTER TABLE `hoa_don`
 -- AUTO_INCREMENT for table `khach_hang`
 --
 ALTER TABLE `khach_hang`
-  MODIFY `KH_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `KH_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `kho_hang`
 --
 ALTER TABLE `kho_hang`
-  MODIFY `K_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `K_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `khuyen_mai`
 --
 ALTER TABLE `khuyen_mai`
-  MODIFY `KM_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `KM_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `loai_san_pham`
 --
 ALTER TABLE `loai_san_pham`
-  MODIFY `LH_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `LH_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `mau`
 --
 ALTER TABLE `mau`
-  MODIFY `M_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `M_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `nhan_vien`
 --
 ALTER TABLE `nhan_vien`
-  MODIFY `NV_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `NV_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `nha_san_xuat`
 --
 ALTER TABLE `nha_san_xuat`
-  MODIFY `NSX_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `NSX_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `phieu_nhap_hang`
@@ -535,13 +638,13 @@ ALTER TABLE `phieu_nhap_hang`
 -- AUTO_INCREMENT for table `san_pham`
 --
 ALTER TABLE `san_pham`
-  MODIFY `SP_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SP_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `size`
 --
 ALTER TABLE `size`
-  MODIFY `S_MA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `S_MA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `trang_thai`
@@ -566,7 +669,6 @@ ALTER TABLE `chi_tiet_don_hang`
 -- Constraints for table `chi_tiet_khuyen_mai`
 --
 ALTER TABLE `chi_tiet_khuyen_mai`
-  ADD CONSTRAINT `chi_tiet_khuyen_mai_ibfk_1` FOREIGN KEY (`KM_MA`) REFERENCES `khuyen_mai` (`KM_MA`),
   ADD CONSTRAINT `chi_tiet_khuyen_mai_ibfk_2` FOREIGN KEY (`SP_MA`) REFERENCES `san_pham` (`SP_MA`);
 
 --
@@ -576,7 +678,7 @@ ALTER TABLE `chi_tiet_phieu_nhap`
   ADD CONSTRAINT `chi_tiet_phieu_nhap_ibfk_1` FOREIGN KEY (`SP_MA`) REFERENCES `san_pham` (`SP_MA`),
   ADD CONSTRAINT `chi_tiet_phieu_nhap_ibfk_2` FOREIGN KEY (`S_MA`) REFERENCES `size` (`S_MA`),
   ADD CONSTRAINT `chi_tiet_phieu_nhap_ibfk_3` FOREIGN KEY (`M_MA`) REFERENCES `mau` (`M_MA`),
-  ADD CONSTRAINT `chi_tiet_phieu_nhap_ibfk_4` FOREIGN KEY (`PN_MA`) REFERENCES `phieu_nhap_hang` (`PN_MA`);
+  ADD CONSTRAINT `chi_tiet_phieu_nhap_ibfk_4` FOREIGN KEY (`K_MA`) REFERENCES `kho_hang` (`K_MA`);
 
 --
 -- Constraints for table `chi_tiet_trang_thai`
@@ -598,7 +700,8 @@ ALTER TABLE `don_hang`
 ALTER TABLE `gia`
   ADD CONSTRAINT `gia_ibfk_1` FOREIGN KEY (`SP_MA`) REFERENCES `san_pham` (`SP_MA`),
   ADD CONSTRAINT `gia_ibfk_2` FOREIGN KEY (`S_MA`) REFERENCES `size` (`S_MA`),
-  ADD CONSTRAINT `gia_ibfk_3` FOREIGN KEY (`NGÂYPDUNG`) REFERENCES `ngay` (`NGAYAPDUNG`);
+  ADD CONSTRAINT `gia_ibfk_3` FOREIGN KEY (`NGAYPDUNG`) REFERENCES `ngay` (`NGAYAPDUNG`),
+  ADD CONSTRAINT `gia_ibfk_4` FOREIGN KEY (`S_MA`) REFERENCES `mau` (`M_MA`);
 
 --
 -- Constraints for table `hoa_don`
