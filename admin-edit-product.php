@@ -16,6 +16,8 @@
 
         require 'database_connection.php';
         //session_start();
+       
+         
         // require 'database_connection.php';
         // session_start();
         $sql ="SELECT * FROM loai_san_pham" ;
@@ -24,9 +26,16 @@
         $sqlNSX = "SELECT * FROM nha_san_xuat";
         $resultNSX = $con->query($sqlNSX);
         
+        $sqlEditSP= "SELECT sp.SP_TEN ,sp.SP_ANH, lsp.LH_TEN,lsp.LH_MA,nsx.NSX_MA, nsx.NSX_TEN, sp.SP_GIA
+        FROM san_pham AS sp
+             INNER JOIN loai_san_pham as lsp ON  lsp.LH_MA = sp.LH_MA 
+             INNER JOIN nha_san_xuat as nsx ON nsx.NSX_MA = sp.NSX_MA 
+        WHERE sp.SP_MA = '".$_GET['id'] ."'";
+        $resultEditSP = $con->query($sqlEditSP);
+        $rowEditSP  = $resultEditSP ->fetch_assoc();
 
       
-        if(isset($_POST['submit_add'])){
+        if(isset($_POST['submit_edit'])){
             $tenSp = $_POST['name_product'];
             $LH = $_POST['Loai_Hang'];//loai san pham
             $NSX = $_POST['Nha_San_Xuat'];
@@ -34,18 +43,22 @@
             $anh = $_FILES['imgProduct']['name'];
             $tmp_anh = $_FILES['imgProduct']['tmp_name'];
     
-            $sqlSP = "INSERT INTO san_pham( `SP_TEN`, `SP_ANH`, `LH_MA`, `NSX_MA`, `SP_GIA`) VALUES ('$tenSp','$anh','$LH','$NSX','$Gia')";
-
-            if($con->query($sqlSP) === TRUE){
+       
+            if($tmp_anh == '' && $anh == ''){
+                $sqlSP = "UPDATE san_pham SET SP_TEN='$tenSp',`LH_MA`='$LH',`NSX_MA`='$NSX',`SP_GIA`='$Gia' WHERE SP_MA = '".$_GET['id'] ."'";
+            }else{
                 move_uploaded_file($tmp_anh, "./public/SanPham/$anh");
+                $sqlSP = "UPDATE san_pham SET SP_TEN='$tenSp',`SP_ANH`='$anh',`LH_MA`='$LH',`NSX_MA`='$NSX',`SP_GIA`='$Gia' WHERE SP_MA = '".$_GET['id'] ."'";
+            }
+            if($con->query($sqlSP) === TRUE){             
                 echo "<script type='text/javascript'>
-                            alert('Thêm sản phẩm thành công!');
+                            alert('Cập nhật sản phẩm thành công!');
                             document.location='admin.php';
                         </script>";
             }else{
                 echo "<script type='text/javascript'>
-                            alert('Thêm sản phẩm không thành công!');
-                            document.location='admin-add-product.php';
+                            alert('Cập nhật sản phẩm không thành công!');
+                            document.location='=admin.php';
                         </script>";
             }
 
@@ -76,12 +89,12 @@
                     <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label>Tên Sản Phẩm</label> <br>
-                            <input type="text" name="name_product" class="form-control" placeholder="Nhập tên sản phẩm">
+                            <input type="text" name="name_product" value="<?php echo $rowEditSP['SP_TEN']; ?>" class="form-control" placeholder="Nhập tên sản phẩm">
                         </div>
                         <div class="form-group">
                             <label>Loại sản phẩm</label> <br>
                             <select class='form-control' name='Loai_Hang'>
-                                <option value="">---Chọn loại sản phẩm---</option>
+                            <option value="<?php echo $rowEditSP['LH_MA']; ?>"> <?php  echo   $rowEditSP['LH_TEN'];?></option>
                                 <?php 
                                // echo " <select class='form-control'>";
                                     while($row = $result->fetch_assoc()){
@@ -94,13 +107,13 @@
                         </div>
                         <div class="form-group">
                             <label >Ảnh</label> <br>
-                            <input type="file" name="imgProduct"  placeholder="" id="img">
+                            <input type="file" name="imgProduct"  placeholder="" id="img" value="<?php echo $rowEditSP['SP_ANH']; ?>">
    
                         </div>
                         <div class="form-group">
                             <label >Nhà sản xuất</label> <br>
                             <select class='form-control' name='Nha_San_Xuat'>
-                                <option value="">---Chọn loại nhà sản xuất---</option>
+                                <option value="<?php echo $rowEditSP['NSX_MA']; ?>"><?php  echo   $rowEditSP['NSX_TEN'];?></option>
                                 <?php 
                                // echo " <select class='form-control'>";
                                     while($rowNSX = $resultNSX->fetch_assoc()){ 
@@ -113,10 +126,10 @@
                         </div>
                         <div class="form-group">
                             <label >Giá</label> <br>
-                            <input type="text" name="price" class="form-control" placeholder="Nhập giá">
+                            <input type="text" name="price" class="form-control"  value="<?php echo $rowEditSP['SP_GIA']; ?>"placeholder="Nhập giá">
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Thêm" class="btn-add" name="submit_add">
+                            <input type="submit" value="Cập nhật" class="btn-add" name="submit_edit">
                         </div>
                         <a href="./admin.php" class="btn-add">Trở về</a>
                     </form>

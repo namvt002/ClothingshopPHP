@@ -42,7 +42,7 @@
                         <h3 class="text-heading" >Thêm mới khuyến mãi</h3>
                     </div>
                     <div class="panel-body">
-                        <form action="form-add-product.php" method="post" enctype="multipart/form-data">
+                        <form action="" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label>Tên khuyến mãi</label> <br>
                                 <input type="text" name="name_promotion" class="form-control" placeholder="Nhập tên khuyến mãi">

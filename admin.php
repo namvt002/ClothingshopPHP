@@ -71,9 +71,7 @@
                 <button class="btn" data-target-tab="#import">
                     <a>Nhập hàng</a>
                 </button>
-                <button class="btn" data-target-tab="#statistic">
-                    <a>Thống kê</a>
-                </button>
+               
                 <button class="btn" data-target-tab="#Promotion">
                     <a>Khuyến mãi</a>
                 </button>
@@ -112,26 +110,45 @@
             </div>
 
 
+            <?php 
+                    $sqlsp = "SELECT * FROM `san_pham` as sp JOIN loai_san_pham as lsp ON sp.LH_MA = lsp.LH_MA JOIN nha_san_xuat as nsx ON sp.NSX_MA = nsx.NSX_MA";
+                    $resultsp = $con->query($sqlsp);
+
+            ?>
             <div class="tab-content" id="product">
                 <a href="./admin-add-product.php"><input class="btn-add-product" type="button" value="Thêm Sản Phẩm"> </a>
                 <table class="tabl">
                     <tr>
                         <th class="col-9">Mã Sản Phẩm</th>
                         <th class="col-9">Loại Sản Phẩm</th>
+                        <th class="col-9">Nhà sản xuất</th>
                         <th class="col-9">Tên</th>
                         <th class="col-9">Ảnh</th>
                         <th class="col-9">Giá</th>
                         <th class="col-9">Thao Tác</th>
                         
                     </tr>
-                    <tr>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>   
-                    </tr>
+                    <?php 
+                        while($rowsp = $resultsp->fetch_assoc()){
+                            echo "<tr>";
+                            echo " <td class='col-9'> ". $rowsp['SP_MA'] ." </td>";
+                            echo " <td class='col-9'> ". $rowsp['LH_TEN'] ." </td>";
+                            echo " <td class='col-9'> ". $rowsp['NSX_TEN'] ." </td>";
+                            echo " <td class='col-9'> ". $rowsp['SP_TEN'] ." </td>";
+                            // echo " <td class='col-9'>  <img src='  ". "'./public/SanPham/'" . $rowsp['SP_ANH'] ."  '> </td>"  ;//anh
+                            echo "<td class='col-9'> <img class='image_product' src='public/SanPham/".$rowsp['SP_ANH']."' > </td>";
+                            echo " <td class='col-9'> ". $rowsp['SP_GIA'] ." </td>"  ;//anh
+                          
+                            echo "<td><a class='btnAction' href='./admin-edit-product.php?id=". $rowsp['SP_MA'] ."'>Sửa</a>
+                            
+                            <a class='btnAction' href='./admin-delete-product.php?id=". $rowsp['SP_MA'] ."'>Xóa</a>
+                            </td>";
+                            // echo "<td><a href='./admin-delete-promotion.php?id=". $rowkm['CTKM_MA'] ."'>Xóa</a></td>";
+                            
+
+                            echo " </tr>";
+                        }
+                    ?>
                 </table>
             </div>
 
@@ -160,73 +177,84 @@
                     </tr>
                 </table>   
             </div>
-
+            <?php 
+                 $sqlK = "SELECT * FROM kho_hang";
+                 $resultKho = $con->query($sqlK);
+             
+            ?>
             <div class="tab-content" id="ware">
+            <a href="./admin-warehouse-add.php"><input class="btn-add-product" type="button" value="Thêm Kho"> </a>
                 <table class="tabl">
                     <tr>
-                        <th class="col-9">Mã Sản Phẩm</th>
-                        <th class="col-9">Tên Sản Phẩm</th>
-                        <th class="col-9">Màu</th>
-                        <th class="col-9">Size</th>
-                        <th class="col-9">Số Lượng</th>
+                        <th class="col-9">Mã kho</th>
+                        <th class="col-9">Tên kho</th>
+                        <th class="col-9">Địa chỉ</th>
                         <th class="col-9">Thao Tác</th> 
+                       
                     </tr>
-                    <tr>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        
-                    </tr>
+                    <?php 
+                        while($rowKho = $resultKho->fetch_assoc()){
+                            echo "<tr>";
+                            echo " <td class='col-9'> ". $rowKho['K_MA'] ." </td>";
+                            echo " <td class='col-9'> ". $rowKho['K_TEN'] ." </td>";
+                            echo " <td class='col-9'> ". $rowKho['K_DIACHI'] ." </td>";
+                            echo "<td><a class='btnAction' href='./admin-warehouse-edit.php?id=". $rowKho['K_MA'] ."'>Sửa</a> 
+                            <a class='btnAction' href='./admin-warehouse-delete.php?id=". $rowKho['K_MA'] ."'>Xóa</a>
+                            </td>";
+                            // echo "<td><a href='./admin-delete-promotion.php?id=". $rowkm['CTKM_MA'] ."'>Xóa</a></td>";
+                            
+
+                            echo " </tr>";
+                        }
+                    ?>
                 </table>   
             </div>
 
+            <?php
+                $sqlNH = "SELECT * FROM chi_tiet_phieu_nhap AS ct 
+                JOIN san_pham AS sp ON ct.SP_MA = sp.SP_MA
+                JOIN kho_hang AS kh ON ct.K_MA = kh.K_MA
+                JOIN size AS s ON ct.S_MA = s.S_MA
+                JOIN mau AS m ON ct.M_MA = m.M_MA";
+                $resultNH = $con->query($sqlNH);
+            ?>
             <div class="tab-content" id="import">
+            <a href="./admin-Import-add.php"><input class="btn-add-product" type="button" value="Thêm nhập hàng"> </a>
                 <table class="tabl">
                     <tr>
                         <th class="col-9">Mã SP</th>
                         <th class="col-9">Tên Sản Phẩm</th>
-                        <th class="col-9">Ngày</th>
                         <th class="col-9">Màu</th>
                         <th class="col-9">Size</th>
                         <th class="col-9">Số Lượng</th>
+                        <th class="col-9">Đơn giá</th>
+                        <th class="col-9">Ngày nhập</th>
+                        <th class="col-9">Kho hàng</th>
                         <th class="col-9">Thao Tác</th>
                     </tr>
-                    <tr>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                    </tr>
+                    <?php 
+                        while($rowNH = $resultNH->fetch_assoc()){
+                            echo "<tr>";
+                            echo " <td class='col-9'> ". $rowNH['CTPN_MA'] ." </td>";
+                            echo " <td class='col-9'> ". $rowNH['SP_TEN'] ." </td>";
+                            echo " <td class='col-9'> ". $rowNH['M_TEN'] ." </td>";
+                            echo " <td class='col-9'> ". $rowNH['S_TEN'] ." </td>";
+                            echo " <td class='col-9'> ". $rowNH['CTPN_SOLUONG'] ." </td>";
+                            echo " <td class='col-9'> ". $rowNH['CTPN_DONGIA'] ." </td>";
+                            echo " <td class='col-9'> ". $rowNH['CTPN_NGAY'] ." </td>";
+                            echo " <td class='col-9'> ". $rowNH['K_TEN'] ." </td>";
+                          
+                            echo "<td><a class='btnAction' href='./admin-Import-edit.php?id=". $rowNH['CTPN_MA'] ."'>Sửa</a>
+                            
+                            <a class='btnAction' href='./admin-Import-delete.php?id=". $rowNH['CTPN_MA'] ."'>Xóa</a>
+                            </td>";
+                           
+                            echo " </tr>";
+                        }
+                    ?>
                 </table>   
             </div>
-            <div class="tab-content" id="statistic">
-                <table class="tabl">
-                    <tr>
-                        <th class="col-9">Mã SP</th>
-                        <th class="col-9">Tên Sản Phẩm</th>
-                        <th class="col-9">Ngày</th>
-                        <th class="col-9">Màu</th>
-                        <th class="col-9">Size</th>
-                        <th class="col-9">Số Lượng</th>
-                        <th class="col-9">Size</th>
-                    </tr>
-                    <tr>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                        <td class="col-9"></td>
-                    </tr>
-                </table>   
-            </div>
+         
             <?php 
                     $sqlkm = "SELECT ct.CTKM_MA, ct.CTKM_TEN, ct.CTKM_NGAYBD, ct.CTKM_NGAYKT, sp.SP_TEN, ct.CTKM_PHANTRAM
                                 FROM san_pham AS sp
@@ -264,7 +292,6 @@
 
                             echo " </tr>";
                         }
-                        $result->free();
                     ?>
                       
                         
